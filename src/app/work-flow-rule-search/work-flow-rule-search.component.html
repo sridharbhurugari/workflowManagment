@@ -1,0 +1,225 @@
+<div class="ui-g">
+  <p-panel class="panel">
+    <ng-template pTemplate="header">
+      <a routerLink="/home"><strong>Home >></strong></a
+      >><a routerLink="/searchrule"><strong>Rule Search</strong></a>
+    </ng-template>
+    <ng-template pTemplate="icons">
+      <div class="flex justify-content-end">
+        <p-button
+          label="Add Rule"
+          (click)="OnNewRule()"
+          styleClass="p-button-sm"
+        ></p-button>
+      </div>
+    </ng-template>
+    <div class="ui-g-12">
+      <div class="ui-g">
+        <div class="grid">
+          <div
+            class="col-3 md:col-6 lg:col-3 sm:col-12"
+            (mouseenter)="onFocus(filterProcess)"
+            (mouseleave)="onFocus()"
+          >
+            <label for="" class="_labelStyle"><strong> Process</strong></label>
+            <p-autoComplete
+              placeholder="Select Process"
+              [(ngModel)]="filterProcess"
+              [suggestions]="filterProcessList"
+              [style]="{ width: '100%', 'text-overflow': 'ellipsis' }"
+              (completeMethod)="getFilterProcessList($event)"
+              field="label"
+              type="search"
+              [dropdown]="true"
+              [disabled]="isRuleNameSelect"
+              [pTooltip]="toolTipData"
+              [inputStyle]="{ width: '100%' }"
+              [minLength]="1"
+              (onSelect)="onProcessSelect()"
+              (onClear)="onProcUnSelect()"
+            ></p-autoComplete>
+          </div>
+          <div
+            class="col-3 md:col-6 lg:col-3 sm:col-12"
+            (mouseenter)="onFocus(filterActivity)"
+            (mouseleave)="onFocus()"
+          >
+            <label for="" class="_labelStyle"><strong>Activity</strong></label>
+            <p-autoComplete
+              placeholder="Select Activity"
+              [(ngModel)]="filterActivity"
+              [suggestions]="filterActivityList"
+              [style]="{ width: '100%' }"
+              (completeMethod)="getFilterActivityList($event)"
+              field="label"
+              type="search"
+              [dropdown]="true"
+              [pTooltip]="toolTipData"
+              [disabled]="!isProcessSelect || isRuleNameSelect"
+              [inputStyle]="{ width: '100%' }"
+              [minLength]="1"
+              (onSelect)="onActSelect()"
+              (onClear)="onActUnSelect()"
+            ></p-autoComplete>
+          </div>
+          <div
+            class="col-3 md:col-6 lg:col-3 sm:col-12"
+            (mouseenter)="onFocus(filterAttribute)"
+            (mouseleave)="onFocus()"
+          >
+            <label for="" class="_labelStyle"><strong>Attribute</strong></label>
+            <p-autoComplete
+              placeholder="Select Attribute"
+              [(ngModel)]="filterAttribute"
+              [suggestions]="filterAttributeList"
+              [style]="{ width: '100%' }"
+              field="label"
+              type="search"
+              [dropdown]="true"
+              [pTooltip]="toolTipData"
+              [disabled]="!isActivitySelect || isRuleNameSelect"
+              [inputStyle]="{ width: '100%' }"
+              [minLength]="1"
+              (completeMethod)="getFilterAttributeList($event)"
+              (onSelect)="onAttSelect()"
+              (onClear)="onAttUnSelect()"
+            ></p-autoComplete>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="col-12 flex justify-content-start">
+            <label for=""><strong>Or</strong></label>
+          </div>
+        </div>
+        <div class="grid">
+          <div
+            class="col-3 md:col-6 lg:col-3 sm:col-12"
+            (mouseenter)="onFocus(filterRuleName)"
+            (mouseleave)="onFocus()"
+          >
+            <label for="" class="_labelStyle"><strong>Rule Name</strong></label>
+            <p-autoComplete
+              placeholder="Select Rule Name"
+              [(ngModel)]="filterRuleName"
+              [suggestions]="filterRuleNameList"
+              [style]="{ width: '100%' }"
+              field="label"
+              type="search"
+              [dropdown]="true"
+              [pTooltip]="toolTipData"
+              [inputStyle]="{ width: '100%' }"
+              [minLength]="1"
+              [disabled]="isAttSelected || isProcessSelect"
+              (completeMethod)="getFilterRuleList($event)"
+              (onSelect)="onRuleNameSelect()"
+              (onClear)="onRuleNameUnSelect()"
+            ></p-autoComplete>
+          </div>
+          <div
+            class="col-3 md:col-6 lg:col-3 sm:col-12"
+            style="margin-top: 15px"
+          >
+            <div class="flex justify-content-start">
+              <div class="field-checkbox">
+                <p-checkbox
+                  [(ngModel)]="isActive"
+                  [binary]="true"
+                  inputId="binary"
+                ></p-checkbox>
+                <label for="binary"><strong>Show Active Only</strong></label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-6 md:col-6 lg:col-6 sm:col-12"
+            style="margin-top: 10px"
+          >
+            <div class="flex justify-content-end">
+              <p-button
+                label="Search"
+                icon="pi pi-search"
+                styleClass="p-button-sm"
+                (click)="OnSearch()"
+              ></p-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <p-table
+          class="table"
+          styleClass="p-datatable-gridlines"
+          [value]="rules"
+          responsiveLayout="stack"
+          [responsive]="true"
+          [loading]="loading"
+          [paginator]="true"
+          [rowHover]="true"
+          [rows]="rowsperPage"
+          [totalRecords]="totalRulesCount"
+          [(first)]="currentPage"
+          [style]="{ width: '100%' }"
+          (onRowSelect)="onRuleSelect($event)"
+          [filterDelay]="0"
+          selectionMode="single"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="ruleName">
+                RuleName<p-sortIcon field="ruleName"></p-sortIcon>
+              </th>
+              <th pSortableColumn="ruleDesc">
+                Expression<p-sortIcon field="ruleDesc"></p-sortIcon>
+              </th>
+              <th pSortableColumn="creator">
+                Created By<p-sortIcon field="creator"></p-sortIcon>
+              </th>
+              <th pSortableColumn="createdTimeStamp">
+                Created Date<p-sortIcon field="createdTimeStamp"></p-sortIcon>
+              </th>
+              <th pSortableColumn="isActive">
+                Status<p-sortIcon field="isActive"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rule>
+            <tr [pSelectableRow]="rule">
+              <td>
+                <span class="p-column-title">RuleName</span>{{ rule.ruleName }}
+              </td>
+              <td>
+                <span class="p-column-title">Expression</span
+                >{{ rule.ruleDesc }}
+              </td>
+              <td>
+                <span class="p-column-title">Created By</span>{{ rule.creator }}
+              </td>
+              <td>
+                <span class="p-column-title">Created Date</span
+                >{{ rule.createdTimeStamp | date: "dd/MM/yyyy" }}
+              </td>
+              <td>
+                <span class="p-column-title">Status</span
+                >{{ rule.isActive | statusTransperPipe: "1" }}
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage" let-columns>
+            <tr>
+              <td
+                [ngClass]="{ 'red-star': alertMessage === 'No Rules Found' }"
+                [attr.colspan]="5"
+              >
+                {{ alertMessage }}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+    <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+  </p-panel>
+</div>

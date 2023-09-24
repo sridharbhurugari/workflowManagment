@@ -1,0 +1,13 @@
+.iconStyle {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+}
+
+.iconStyle-last-child {
+    margin-left: 20px !important;
+}
+
+._labelStyle {
+    display: block;
+}

@@ -1,0 +1,123 @@
+<div class="container">
+  <div class="sideBar">
+    <div class="flex flex-column card-container green-container">
+      <div
+        class="flex align-items-center justify-content-center border-round m-2"
+      >
+        <img src="assets/Images/HRMS_Logo.jpg" class="image_3" alt="logo" />
+      </div>
+      <div
+        class="flex align-items-center justify-content-center border-round m-2"
+      >
+        <ul class="menu">
+          <li>
+            <a
+              class="menuItem"
+              style="color: #25396f"
+              routerLink="/home"
+              (click)="closeNav()"
+              ><strong> Workflow Template</strong></a
+            >
+          </li>
+          <li>
+            <a
+              class="menuItem"
+              style="color: #25396f"
+              routerLink="/searchrule"
+              (click)="closeNav()"
+            >
+              <strong> Rules</strong></a
+            >
+          </li>
+          <li>
+            <a
+              class="menuItem"
+              style="color: #25396f"
+              routerLink="/activity"
+              (click)="closeNav()"
+            >
+              <strong> Activity Definition</strong></a
+            >
+          </li>
+          <li>
+            <a
+              class="menuItem"
+              style="color: #25396f"
+              routerLink="/process"
+              (click)="closeNav()"
+            >
+              <strong> Process Definition</strong></a
+            >
+          </li>
+          <li>
+            <a
+              class="menuItem"
+              style="color: #25396f"
+              routerLink="/process"
+              (click)="closeNav()"
+            >
+              <strong>Organisation Definition</strong></a
+            >
+          </li>
+          <!-- <li> <a class="menuItem" style="color: #25396f" routerLink="/contact" (click)="closeNav()"><strong>MIS</strong></a></li> -->
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="rightContent">
+    <div class="toolBar">
+      <div class="card">
+        <div class="card-container purple-container overflow-hidden">
+          <div class="flex">
+            <div
+              class="flex-none flex align-items-center justify-content-start font-bold text-black m-2 text-4xl border-round"
+            >
+              Workflow Management Module - Admin
+            </div>
+            <div
+              class="flex-1 flex align-items-center justify-content-end m-2 border-round"
+            >
+              <div class="flex align-items-center justify-content-end">
+                <img src="assets/Images/GOK.png" class="image_2" alt="logo" />
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="pi pi-bell"
+                  class="p-button-rounded p-button-text"
+                ></button>
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="pi pi-user"
+                  class="p-button-rounded p-button-text"
+                ></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <div><router-outlet></router-outlet></div>
+    </div>
+  </div>
+</div>
+<div class="footerContent">
+  <div class="grid">
+    <div class="col-6 flex justify-content-start">
+      <span>
+        &nbsp; Copyright © 2022 HRMS 2 Directorate, Government of Karnataka
+      </span>
+    </div>
+    <!-- <div class="col-6 flex justify-content-end">
+      <span>
+        Developed By
+        <a href="https://peritussoft.com/" target="_blank"
+          >Peritus Corporation</a
+        ></span
+      >
+    </div> -->
+  </div>
+</div>

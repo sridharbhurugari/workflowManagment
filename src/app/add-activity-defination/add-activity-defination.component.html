@@ -1,0 +1,590 @@
+<div class="ui-g">
+  <p-panel class="panel">
+    <ng-template pTemplate="header">
+      <a routerLink="/home"><strong>Home >></strong></a
+      >><a routerLink="/activity"
+        ><strong>Activity Definition Listing</strong></a
+      ><a routerLink="/addActivity"
+        ><strong>>>Add Activity Definition</strong></a
+      >
+    </ng-template>
+    <ng-template pTemplate="icons">
+      <div class="iconStyle">
+        <p-toast position="top-right"></p-toast>
+      </div>
+    </ng-template>
+    <div class="ui-g-12">
+      <div class="ui-g">
+        <div class="grid">
+          <div
+            class="col-3 md:col-6 lg:col-3 sm:col-12"
+            (mouseenter)="onFocus(filterDepartment)"
+            (mouseleave)="onFocus()"
+          >
+            <label for="" class="_labelStyle"
+              ><strong> Department/Directorate</strong
+              ><span class="red-star">★</span></label
+            >
+            <p-autoComplete
+              placeholder="Select Department"
+              [(ngModel)]="filterDepartment"
+              [suggestions]="filterDepartmentList"
+              [style]="{ width: '100%', 'text-overflow': 'ellipsis' }"
+              (completeMethod)="getFilterDepartmentList($event)"
+              field="label"
+              type="search"
+              [dropdown]="true"
+              [pTooltip]="toolTipData"
+              [disabled]="isSelected"
+              [inputStyle]="{ width: '100%' }"
+              [minLength]="1"
+              (onSelect)="onDepartmentSelect()"
+              (onClear)="onDepUnSelect()"
+            ></p-autoComplete>
+          </div>
+          <div
+            class="col-3 md:col-6 lg:col-3 sm:col-12"
+            (mouseenter)="onFocus(filterOfficeLevel)"
+            (mouseleave)="onFocus()"
+          >
+            <label for="" class="_labelStyle"
+              ><strong> Office Level(Optional)</strong></label
+            >
+            <p-autoComplete
+              placeholder="Select Office Level"
+              [(ngModel)]="filterOfficeLevel"
+              [suggestions]="filterOfficeLevelList"
+              [style]="{ width: '100%' }"
+              (completeMethod)="getFilterOfficeLevelList($event)"
+              field="label"
+              type="search"
+              [dropdown]="true"
+              [pTooltip]="toolTipData"
+              [disabled]="!isDepSelect || isSelected"
+              [inputStyle]="{ width: '100%' }"
+              [minLength]="1"
+              (onClear)="onOfcLvlUnSelect()"
+              (onSelect)="onOfficeLevelSelect()"
+            ></p-autoComplete>
+          </div>
+          <div
+            class="col-3 md:col-6 lg:col-3 sm:col-12"
+            (mouseenter)="onFocus(filterOffice)"
+            (mouseleave)="onFocus()"
+          >
+            <label for="" class="_labelStyle"
+              ><strong>Office(Optional)</strong></label
+            >
+            <p-autoComplete
+              placeholder="Select Office"
+              [(ngModel)]="filterOffice"
+              [suggestions]="filterOfficeList"
+              [style]="{ width: '100%' }"
+              (completeMethod)="getFilterOfficeList($event)"
+              field="label"
+              type="search"
+              [dropdown]="true"
+              [pTooltip]="toolTipData"
+              [disabled]="!isOfcLvlSelect || isSelected"
+              [inputStyle]="{ width: '100%' }"
+              [minLength]="1"
+              (onClear)="onOfcUnSelect()"
+              (onSelect)="onOfficeSelect()"
+            ></p-autoComplete>
+          </div>
+        </div>
+        <div class="grid">
+          <div
+            class="col-3 md:col-6 lg:col-3 sm:col-12"
+            (mouseenter)="onFocus(filterProcess)"
+            (mouseleave)="onFocus()"
+          >
+            <label for="" class="_labelStyle"
+              ><strong> Process</strong><span class="red-star">★</span></label
+            >
+            <p-autoComplete
+              placeholder="Select Process"
+              [(ngModel)]="filterProcess"
+              [suggestions]="filterProcessList"
+              [style]="{ width: '100%', 'text-overflow': 'ellipsis' }"
+              (completeMethod)="getFilterProcessList($event)"
+              field="label"
+              type="search"
+              [dropdown]="true"
+              [pTooltip]="toolTipData"
+              [disabled]="isSelected"
+              [inputStyle]="{ width: '100%' }"
+              [minLength]="1"
+              (onClear)="onProcUnSelect()"
+              (onSelect)="onProcessSelect()"
+            ></p-autoComplete>
+          </div>
+          <div
+            class="col-3 md:col-6 lg:col-3 sm:col-12"
+            (mouseenter)="onFocus(filterActivity)"
+            (mouseleave)="onFocus()"
+          >
+            <label for="" class="_labelStyle"
+              ><strong>Activity</strong><span class="red-star">★</span></label
+            >
+            <p-autoComplete
+              placeholder="Select Activity"
+              [(ngModel)]="filterActivity"
+              [suggestions]="filterActivityList"
+              [style]="{ width: '100%' }"
+              (completeMethod)="getFilterActivityList($event)"
+              field="label"
+              type="search"
+              [dropdown]="true"
+              [pTooltip]="toolTipData"
+              [disabled]="!isProcSelect || isSelected"
+              [inputStyle]="{ width: '100%' }"
+              [minLength]="1"
+              (onClear)="onActUnSelect()"
+              (onSelect)="onActivitySelect()"
+            ></p-autoComplete>
+          </div>
+          <div
+            class="col-3 md:col-6 lg:col-3 sm:col-12"
+            (mouseenter)="onFocus(filterWorkflow)"
+            (mouseleave)="onFocus()"
+          >
+            <label for="" class="_labelStyle"
+              ><strong>Select Workflow Template</strong
+              ><span class="red-star">★</span></label
+            >
+            <p-autoComplete
+              placeholder="Select Workflow Template"
+              [(ngModel)]="filterWorkflow"
+              [suggestions]="filterWorkflowList"
+              [style]="{ width: '100%' }"
+              (completeMethod)="getFilterWorkflowList($event)"
+              field="label"
+              type="search"
+              [dropdown]="true"
+              [pTooltip]="toolTipData"
+              [disabled]="!isLoading || isSelected"
+              [inputStyle]="{ width: '100%' }"
+              [minLength]="1"
+              (onSelect)="onWorkflowSelect()"
+              (onClear)="onWorkflowClear()"
+            ></p-autoComplete>
+          </div>
+          <div class="col-2 md:col-2 lg:col-2 sm:col-12">
+            <label for="" class="_labelStyle"><strong>SLA</strong></label>
+            <input
+              type="text"
+              [style]="{ width: '100%' }"
+              [readonly]="true"
+              pInputText
+              [(ngModel)]="numberOfDueDays"
+            />
+          </div>
+          <div class="col-1" style="margin-top: 15px">
+            <div class="field-checkbox">
+              <p-checkbox
+                [(ngModel)]="active"
+                [binary]="true"
+                inputId="binary"
+              ></p-checkbox>
+              <label for="binary"><strong>Active</strong></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="ui-g" *ngIf="isSelected">
+      <div class="ui-g-12">
+        <p-table
+          class="table"
+          styleClass="p-datatable-gridlines"
+          [value]="steps"
+          responsiveLayout="stack"
+          [responsive]="true"
+          [loading]="loading"
+          [rows]="rowsperPage"
+          [style]="{ width: '100%' }"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Step</th>
+              <th>Department</th>
+              <th>Office Level</th>
+              <th>Role</th>
+              <th>Cadre</th>
+              <th>Post</th>
+              <th>Responsibility</th>
+              <th>Assignment Type</th>
+              <th>Due Days</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-steps let-rowIndex="rowIndex">
+            <tr [pSelectableRow]="steps">
+              <td>
+                <span class="p-column-title">Step</span>{{ rowIndex + 1 }}
+              </td>
+              <td pTooltip="{{ steps.depName }}">
+                <span class="p-column-title">Department</span
+                >{{ steps.depCode }}
+              </td>
+              <td pTooltip="{{ steps.offLevName }}">
+                <span class="p-column-title">Office Level</span
+                >{{ steps.offLevCode }}
+              </td>
+              <td pTooltip="{{ steps.rolName }}">
+                <span class="p-column-title">Role</span>{{ steps.rolCode }}
+              </td>
+              <td pTooltip="{{ steps.cdrName }}">
+                <span class="p-column-title">Cadre</span>{{ steps.cdrCode }}
+              </td>
+              <td pTooltip="{{ steps.pstName }}">
+                <span class="p-column-title">Post</span>{{ steps.pstCode }}
+              </td>
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <p-dropdown
+                      placeholder="Responsibility"
+                      [(ngModel)]="steps.noteTempName"
+                      [options]="responsibilities"
+                      (keydown)="disableNavigation($event)"
+                      [style]="{ width: '100%' }"
+                    ></p-dropdown>
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ steps.noteTempName }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <p-dropdown
+                      placeholder="Assignment"
+                      [(ngModel)]="steps.assignType"
+                      [options]="assignments"
+                      (keydown)="disableNavigation($event)"
+                      [style]="{ width: '100%' }"
+                    ></p-dropdown>
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ steps.assignType }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input
+                      pInputText
+                      type="number"
+                      min="0"
+                      max="99"
+                      step="1"
+                      pattern="\d*"
+                      maxlength="2"
+                      (change)="numberOfDaysChanged()"
+                      oninput="this.value = Math.abs(this.value)"
+                      [(ngModel)]="steps.stpSLADays"
+                    />
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ steps.stpSLADays }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage" let-columns>
+            <tr>
+              <td [attr.colspan]="9">No Records</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+    <div class="ui-g" *ngIf="!isSelected">
+      <div class="ui-g-12">
+        <p-table
+          class="table"
+          styleClass="p-datatable-gridlines"
+          [value]="wrkSteps"
+          responsiveLayout="stack"
+          [responsive]="true"
+          [loading]="loading"
+          [paginator]="false"
+          [rowHover]="true"
+          [rows]="rowsperPage"
+          [style]="{ width: '100%' }"
+          [filterDelay]="0"
+          selectionMode="single"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Step</th>
+              <th>Department</th>
+              <th>Office Level</th>
+              <th>Role</th>
+              <th>Cadre</th>
+              <th>Post</th>
+              <th>Responsibility</th>
+              <th>Assignment Type</th>
+              <th>Due Days</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-steps let-rowIndex="rowIndex">
+            <tr [pSelectableRow]="wrkSteps">
+              <td>
+                <span class="p-column-title">Step</span>{{ rowIndex + 1 }}
+              </td>
+              <td pTooltip="{{ steps.departmentName }}">
+                <span class="p-column-title">Department</span
+                >{{ steps.departmentCode }}
+              </td>
+              <td pTooltip="{{ steps.officeLevelName }}">
+                <span class="p-column-title">Office Level</span
+                >{{ steps.officeLevelCode }}
+              </td>
+              <td pTooltip="{{ steps.roleName }}">
+                <span class="p-column-title">Role</span>{{ steps.roleCode }}
+              </td>
+              <td pTooltip="{{ steps.cadreName }}">
+                <span class="p-column-title">Cadre</span>{{ steps.cadreCode }}
+              </td>
+              <td pTooltip="{{ steps.postName }}">
+                <span class="p-column-title">Post</span>{{ steps.postCode }}
+              </td>
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <p-dropdown
+                      placeholder="Responsibility"
+                      [(ngModel)]="steps.noteTempName"
+                      field="label"
+                      [options]="responsibilities"
+                      (keydown)="disableNavigation($event)"
+                      [style]="{ width: '100%' }"
+                    ></p-dropdown>
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ steps.noteTempName }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <p-dropdown
+                      placeholder="Assignment"
+                      [(ngModel)]="steps.assignmentType"
+                      field="label"
+                      [options]="assignments"
+                      (keydown)="disableNavigation($event)"
+                      [style]="{ width: '100%' }"
+                    ></p-dropdown>
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ steps.assignmentType }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input
+                      pInputText
+                      type="number"
+                      min="0"
+                      max="99"
+                      step="1"
+                      pattern="\d*"
+                      maxlength="2"
+                      (change)="numberOfDaysChanged()"
+                      oninput="this.value = Math.abs(this.value)"
+                      [(ngModel)]="steps.stpSLADays"
+                    />
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{ steps.stpSLADays }}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage" let-columns>
+            <tr>
+              <td [attr.colspan]="9">No Records</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+    <br />
+    <div class="flex justify-content-end">
+      <p-button
+        label="Select Rule"
+        [disabled]="!isActSelect || isSelected"
+        (onClick)="onSelectRuleClick()"
+        styleClass="p-button-sm"
+      ></p-button>
+    </div>
+    <br />
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <p-table
+          class="table"
+          styleClass="p-datatable-gridlines"
+          [value]="selectedRuleList"
+          responsiveLayout="stack"
+          [responsive]="true"
+          [loading]="loading"
+          [rows]="rowsperPage"
+          [style]="{ width: '100%' }"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Join</th>
+              <th>Rule Name</th>
+              <th>Rule Expression</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rule>
+            <tr [pSelectableRow]="rule">
+              <td>{{ rule.logicalOp }}</td>
+              <td>{{ rule.ruleName }}</td>
+              <td>{{ rule.ruleDesc }}</td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage" let-columns>
+            <tr>
+              <td [attr.colspan]="3">No Records</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+    <br />
+    <div class="grid flex justify-content-end">
+      <div class="col-1 md:col-6 lg:col-1 sm:col-12 flex justify-content-end">
+        <p-button
+          label="Cancel"
+          (click)="onClickBack()"
+          styleClass="p-button-sm"
+        ></p-button>
+      </div>
+      <div class="col-1 md:col-6 lg:col-1 sm:col-12 flex justify-content-end">
+        <p-button
+          label="Submit"
+          [disabled]="
+            isSubmit ||
+            !isDepSelect ||
+            !isProcSelect ||
+            !isActSelect ||
+            !isWrkTempSelect
+          "
+          (onClick)="onSubmitActivity()"
+          styleClass="p-button-sm"
+        ></p-button>
+      </div>
+    </div>
+    <br />
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <p-dialog
+          header="Select Rule"
+          [(visible)]="ruleDialog"
+          [style]="{ width: '60vw' }"
+        >
+          <div class="ui-g">
+            <div class="dialogClass">
+              <div class="ui-g">
+                <div class="ui-g-12">
+                  <p-table
+                    #rulesTableRef
+                    styleClass="p-datatable-gridlines"
+                    [value]="ruleList"
+                    dataKey="ruleId"
+                    responsiveLayout="stack"
+                    [responsive]="true"
+                    [loading]="loading"
+                    [rows]="rowsperPage"
+                    [paginator]="true"
+                    [style]="{ width: '100%' }"
+                    [(selection)]="selectedRuleList"
+                  >
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th style="width: 3rem">
+                          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th>
+                          <div
+                            class="flex justify-content-start align-items-center"
+                          >
+                            Rule Name
+                            <p-columnFilter
+                              type="text"
+                              field="ruleName"
+                              display="menu"
+                              matchMode="contains"
+                              [showClearButton]="false"
+                              [showMatchModes]="false"
+                              [showOperator]="false"
+                              [showAddButton]="false"
+                            ></p-columnFilter>
+                          </div>
+                        </th>
+                        <th>
+                          <div
+                            class="flex justify-content-center align-items-center"
+                          >
+                            Rule Expression
+                            <p-columnFilter
+                              type="text"
+                              field="ruleDesc"
+                              display="menu"
+                              matchMode="contains"
+                              [showClearButton]="false"
+                              [showMatchModes]="false"
+                              [showOperator]="false"
+                              [showAddButton]="false"
+                            ></p-columnFilter>
+                          </div>
+                        </th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rule>
+                      <tr [pSelectableRow]="rule">
+                        <td>
+                          <p-tableCheckbox [value]="rule"></p-tableCheckbox>
+                        </td>
+                        <td>{{ rule.ruleName }}</td>
+                        <td>{{ rule.ruleDesc }}</td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage" let-columns>
+                      <tr>
+                        <td [attr.colspan]="3">No Records</td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br />
+          <div class="flex justify-content-end">
+            <p-button
+              label="Select"
+              (click)="onRuleSelect()"
+              styleClass="p-button-sm"
+            ></p-button>
+          </div>
+        </p-dialog>
+      </div>
+    </div>
+
+    <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+  </p-panel>
+</div>

@@ -1,0 +1,232 @@
+<div class="ui-g">
+  <p-panel class="panel">
+    <ng-template pTemplate="header">
+      <a routerLink="/home"><strong>Home >></strong></a
+      >><a routerLink="/home"><strong> Workflow Template Listing</strong></a>
+    </ng-template>
+    <ng-template pTemplate="icons">
+      <div>
+        <p-button
+          label="Add Template"
+          (click)="addTemplate()"
+          styleClass="p-button-sm"
+        ></p-button>
+      </div>
+    </ng-template>
+    <div class="ui-g-12">
+      <div class="ui-g">
+        <div class="grid">
+          <div
+            class="col-3 md:col-6 lg:col-3 sm:col-12"
+            (mouseenter)="onFocus(filterDepartment)"
+            (mouseleave)="onFocus()"
+          >
+            <label for="" class="_labelStyle"
+              ><strong> Department/Directorate</strong
+              ><span class="red-star">★</span></label
+            >
+            <p-autoComplete
+              placeholder="Select Department"
+              [(ngModel)]="filterDepartment"
+              [suggestions]="filterDepartmentList"
+              [style]="{ width: '100%', 'text-overflow': 'ellipsis' }"
+              (completeMethod)="getFilterDepartmentList($event)"
+              field="label"
+              [dropdown]="true"
+              [pTooltip]="toolTipData"
+              [inputStyle]="{ width: '100%' }"
+              type="search"
+              [minLength]="1"
+              (onSelect)="onDepartmentSelect()"
+              (onClear)="onDepartmentUnSelect()"
+            ></p-autoComplete>
+          </div>
+          <div
+            class="col-3 md:col-6 lg:col-3 sm:col-12"
+            (mouseenter)="onFocus(filterOfficeLevel)"
+            (mouseleave)="onFocus()"
+          >
+            <label for="" class="_labelStyle"
+              ><strong> Office Level(Optional)</strong></label
+            >
+            <p-autoComplete
+              placeholder="Select Office Level"
+              [(ngModel)]="filterOfficeLevel"
+              [suggestions]="filterOfficeLevelList"
+              [style]="{ width: '100%' }"
+              (completeMethod)="getFilterOfficeLevelList($event)"
+              field="label"
+              [dropdown]="true"
+              [pTooltip]="toolTipData"
+              [inputStyle]="{ width: '100%' }"
+              [disabled]="!isDepartmentSelect"
+              type="search"
+              [minLength]="1"
+              (onSelect)="onOfficeLevelSelect()"
+              (onClear)="onofcLvlUnSelect()"
+            ></p-autoComplete>
+          </div>
+          <div
+            class="col-3 md:col-6 lg:col-3 sm:col-12"
+            (mouseenter)="onFocus(filterOffice)"
+            (mouseleave)="onFocus()"
+          >
+            <label for="" class="_labelStyle"
+              ><strong>Office(Optional)</strong></label
+            >
+            <p-autoComplete
+              placeholder="Select Office"
+              [(ngModel)]="filterOffice"
+              [suggestions]="filterOfficeList"
+              [style]="{ width: '100%' }"
+              (completeMethod)="getFilterOfficeList($event)"
+              field="label"
+              [dropdown]="true"
+              [pTooltip]="toolTipData"
+              [inputStyle]="{ width: '100%' }"
+              [disabled]="!isOffLvlSelect"
+              type="search"
+              [minLength]="1"
+              (onSelect)="onOfficeSelect()"
+            ></p-autoComplete>
+          </div>
+          <div
+            class="col-2 md:col-3 lg:col-2 sm:col-6"
+            style="margin-top: 15px"
+          >
+            <div class="flex justify-content-start">
+              <div class="field-checkbox">
+                <p-checkbox
+                  [(ngModel)]="isActive"
+                  [binary]="true"
+                  inputId="binary"
+                ></p-checkbox>
+                <label for="binary"><strong>Show Active Only</strong></label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-1 md:col-3 lg:col-1 sm:col-6"
+            style="margin-top: 10px"
+          >
+            <div class="flex justify-content-end">
+              <p-button
+                label="Search"
+                icon="pi pi-search"
+                styleClass="p-button-sm"
+                (click)="onSearch()"
+              ></p-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <p-table
+          class="table"
+          styleClass="p-datatable-gridlines"
+          [value]="workflows"
+          responsiveLayout="stack"
+          [responsive]="true"
+          [loading]="loading"
+          [paginator]="true"
+          [rowHover]="true"
+          [rows]="rowsperPage"
+          [totalRecords]="totalWorkFlowCount"
+          [style]="{ width: '100%' }"
+          [filterDelay]="0"
+          [(first)]="currentPage"
+          dataKey="templateId"
+          selectionMode="single"
+          (onRowSelect)="onWorkflowSelect($event)"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="rowIndex">
+                SNO<p-sortIcon field="rowIndex"></p-sortIcon>
+              </th>
+              <th pSortableColumn="shortName">
+                Template Name<p-sortIcon field="shortName"></p-sortIcon>
+              </th>
+              <th pSortableColumn="description">
+                Template Description<p-sortIcon
+                  field="description"
+                ></p-sortIcon>
+              </th>
+              <th pSortableColumn="departmentCode">
+                Department<p-sortIcon field="departmentCode"></p-sortIcon>
+              </th>
+              <th pSortableColumn="officeLevelCode">
+                Office Level<p-sortIcon field="officeLevelCode"></p-sortIcon>
+              </th>
+              <th pSortableColumn="officeCode">
+                Office<p-sortIcon field="officeCode"></p-sortIcon>
+              </th>
+              <th pSortableColumn="isDefault">
+                Default<p-sortIcon field="isDefault"></p-sortIcon>
+              </th>
+              <th pSortableColumn="createdBy">
+                Created By<p-sortIcon field="createdBy"></p-sortIcon>
+              </th>
+              <th pSortableColumn="isActive">
+                Status<p-sortIcon field="isActive"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-workflow let-rowIndex="rowIndex">
+            <tr [pSelectableRow]="workflow">
+              <td><span class="p-column-title">SNO</span>{{ rowIndex + 1 }}</td>
+              <td>
+                <span class="p-column-title">Template Name</span
+                >{{ workflow.shortName }}
+              </td>
+              <td>
+                <span class="p-column-title">Template Description</span
+                >{{ workflow.description }}
+              </td>
+              <td pTooltip="{{ workflow.departmentName }}">
+                <span class="p-column-title">Department</span
+                >{{ workflow.departmentCode }}
+              </td>
+              <td pTooltip="{{ workflow.officeLevelName }}">
+                <span class="p-column-title">Office Level</span
+                >{{ workflow.officeLevelCode }}
+              </td>
+              <td pTooltip="{{ workflow.officeName }}">
+                <span class="p-column-title">Office</span
+                >{{ workflow.officeCode }}
+              </td>
+              <td>
+                <span class="p-column-title">Default</span
+                >{{ workflow.isDefault | statusTransperPipe: "2" }}
+              </td>
+              <td>
+                <span class="p-column-title">Created By</span
+                >{{ workflow.createdBy }}
+              </td>
+              <td>
+                <span class="p-column-title">Active</span
+                >{{ workflow.isActive | statusTransperPipe: "1" }}
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage" let-columns>
+            <tr>
+              <td
+                [ngClass]="{
+                  'red-star': alertMessage === 'No Templates Found'
+                }"
+                [attr.colspan]="9"
+              >
+                {{ alertMessage }}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+    <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+  </p-panel>
+</div>

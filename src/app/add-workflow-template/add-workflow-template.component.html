@@ -1,0 +1,452 @@
+<div class="ui-g">
+  <p-panel>
+    <ng-template pTemplate="header">
+      <a routerLink="/home"><strong>Home >></strong></a
+      >><a routerLink="/home"><strong> Workflow Template Listing</strong></a
+      ><a routerLink="/addWorkflow"><strong>>> Add Workflow</strong></a>
+    </ng-template>
+    <ng-template pTemplate="icons">
+      <div class="iconStyle">
+        <p-toast position="top-right"></p-toast>
+      </div>
+    </ng-template>
+    <div class="ui-g-12">
+      <div class="ui-g">
+        <div class="grid">
+          <div
+            class="col-3 md:col-6 lg:col-3 sm:col-12"
+            (mouseenter)="onFocus(filterDepartment)"
+            (mouseleave)="onFocus()"
+          >
+            <label for="" class="_labelStyle"
+              ><strong> Department/Directorate</strong
+              ><span class="red-star">★</span></label
+            >
+            <p-autoComplete
+              placeholder="Select Department"
+              [(ngModel)]="filterDepartment"
+              [suggestions]="filterDepartmentList"
+              [style]="{ width: '100%' }"
+              (completeMethod)="getFilterDepartmentList($event)"
+              field="label"
+              [dropdown]="true"
+              [pTooltip]="toolTipData"
+              [inputStyle]="{ width: '100%' }"
+              type="search"
+              [disabled]="isSelected"
+              [minLength]="1"
+              (onClear)="onDepartmentUnselect()"
+              (onSelect)="onDepartmentSelect()"
+            ></p-autoComplete>
+          </div>
+          <div
+            class="col-3 md:col-6 lg:col-3 sm:col-12"
+            (mouseenter)="onFocus(filterOfficeLevel)"
+            (mouseleave)="onFocus()"
+          >
+            <label for="" class="_labelStyle"
+              ><strong> Office Level</strong></label
+            >
+            <p-autoComplete
+              placeholder="Select Office Level"
+              [(ngModel)]="filterOfficeLevel"
+              [suggestions]="filterOfficeLevelList"
+              [style]="{ width: '100%' }"
+              (completeMethod)="getFilterOfficeLevelList($event)"
+              field="label"
+              [dropdown]="true"
+              [pTooltip]="toolTipData"
+              [disabled]="!isDepartmentSelect || isSelected"
+              type="search"
+              [inputStyle]="{ width: '100%' }"
+              [minLength]="1"
+              (onClear)="onOfcLvlUnselect()"
+              (onSelect)="onOfficeLevelSelect()"
+            ></p-autoComplete>
+          </div>
+          <div
+            class="col-3 md:col-6 lg:col-3 sm:col-12"
+            (mouseenter)="onFocus(filterOffice)"
+            (mouseleave)="onFocus()"
+          >
+            <label for="" class="_labelStyle"><strong>Office</strong></label>
+            <p-autoComplete
+              placeholder="Select Office"
+              [(ngModel)]="filterOffice"
+              [suggestions]="filterOfficeList"
+              [style]="{ width: '100%' }"
+              (completeMethod)="getFilterOfficeList($event)"
+              field="label"
+              [dropdown]="true"
+              [pTooltip]="toolTipData"
+              [disabled]="!isOffLvlSelect || isSelected"
+              type="search"
+              [inputStyle]="{ width: '100%' }"
+              (onSelect)="onOfficeSelect()"
+              [minLength]="1"
+            ></p-autoComplete>
+          </div>
+        </div>
+        <br />
+        <div class="grid">
+          <div class="col-2 md:col-6 lg:col-3 sm:col-12">
+            <label for="" class="_labelStyle"
+              ><strong> Workflow Template Name </strong
+              ><span class="red-star">★</span></label
+            >
+            <input
+              type="text"
+              maxlength="50"
+              [style]="{ width: '100%' }"
+              type="search"
+              [readonly]="isSelected"
+              oninput="this.value = this.value.replace(/[^A-Za-z0-9-,.;'&/.() ]|^ /g,'')"
+              [pTooltip]="workflowTemplateName"
+              pInputText
+              [(ngModel)]="workflowTemplateName"
+            />
+          </div>
+          <div class="col-4 md:col-6 lg:col-3 sm:col-12">
+            <label for="" class="_labelStyle"
+              ><strong> Workflow Step Description </strong></label
+            >
+            <textarea
+              pIroutlextArea
+              rows="2"
+              [readonly]="true"
+              readonly="true"
+              style="width: 100%; resize: none"
+              [pTooltip]="workflowStepDescription"
+              [(ngModel)]="workflowStepDescription"
+            ></textarea>
+          </div>
+          <div class="col-1" style="margin-top: 15px">
+            <div class="field-checkbox">
+              <p-checkbox
+                [(ngModel)]="active"
+                [binary]="true"
+                inputId="binary"
+              ></p-checkbox>
+              <label for="binary"><strong>Active</strong></label>
+            </div>
+          </div>
+          <div class="col-2" style="margin-top: 15px">
+            <div class="field-checkbox">
+              <p-checkbox
+                [(ngModel)]="departmentDefault"
+                [binary]="true"
+                inputId=""
+              ></p-checkbox>
+              <label for=""><strong>Department Default</strong></label>
+            </div>
+          </div>
+        </div>
+        <div class="flex justify-content-end" *ngIf="!isSelected">
+          <p-button
+            label="Add Step"
+            [disabled]="isAddStep"
+            (onClick)="addStep()"
+            styleClass="p-button-sm"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <p-table
+          class="table"
+          styleClass="p-datatable-gridlines"
+          [value]="steps"
+          [loading]="loading"
+          [rows]="rowperPage"
+          responsiveLayout="stack"
+          [responsive]="true"
+          [style]="{ width: '100%' }"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Step Number</th>
+              <th>Department</th>
+              <th>Office Level</th>
+              <th>Role</th>
+              <th>cadre</th>
+              <th>Post</th>
+              <th>Assignment Type</th>
+              <th *ngIf="!isSaved && !isSelected"></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-product>
+            <tr>
+              <td>
+                <span class="p-column-title">Step Number</span
+                >{{ product.stepNumber }}
+              </td>
+              <td pTooltip="{{ product.departmentName }}">
+                <span class="p-column-title">Department</span
+                >{{ product.departmentCode }}
+              </td>
+              <td pTooltip="{{ product.officeLevelName }}">
+                <span class="p-column-title">Office Level</span
+                >{{ product.officeLevelCode }}
+              </td>
+              <td pTooltip="{{ product.roleName }}">
+                <span class="p-column-title">Role</span>{{ product.roleCode }}
+              </td>
+              <td pTooltip="{{ product.cadreName }}">
+                <span class="p-column-title">cadre</span>{{ product.cadreCode }}
+              </td>
+              <td pTooltip="{{ product.postName }}">
+                <span class="p-column-title">Post</span>{{ product.postCode }}
+              </td>
+              <td>
+                <span class="p-column-title">Assignment Type</span
+                >{{ product.assignmentType }}
+              </td>
+              <td *ngIf="!isSaved && !isSelected">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="pi pi-pencil"
+                  (click)="editProduct(product)"
+                  class="p-button-rounded p-button-text"
+                ></button>
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="pi pi-trash"
+                  (click)="deleteProduct(product)"
+                  class="p-button-rounded p-button-text"
+                ></button>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage" let-columns>
+            <tr>
+              <td [attr.colspan]="8">No Records</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+    <br />
+    <div class="grid flex justify-content-end">
+      <div class="col-1 md:col-6 lg:col-1 sm:col-12 flex justify-content-end">
+        <p-button
+          label="Cancel"
+          (onClick)="onClickBack()"
+          styleClass="p-button-sm"
+        ></p-button>
+      </div>
+      <div class="col-1 md:col-6 lg:col-1 sm:col-12 flex justify-content-end">
+        <p-button
+          label="Submit"
+          [disabled]="isSubmit && !isSelected"
+          (onClick)="onSubmitTemplate()"
+          styleClass="p-button-sm"
+        ></p-button>
+      </div>
+    </div>
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <p-dialog
+          header="Add step"
+          [(visible)]="addStepDialog"
+          [style]="{ width: '50vw' }"
+        >
+          <div class="ui-g">
+            <div class="dialogClass">
+              <div class="grid">
+                <div class="col-4">
+                  <label><strong> Step No </strong></label>
+                </div>
+                <div class="col-8">
+                  <input
+                    type="text"
+                    [disabled]="true"
+                    readonly="true"
+                    pInputText
+                    [(ngModel)]="stepNo"
+                  />
+                </div>
+              </div>
+              <div class="grid">
+                <div class="col-4">
+                  <label>
+                    <strong> Department /Directorate </strong>
+                  </label>
+                </div>
+                <div
+                  class="col-8"
+                  (mouseenter)="onFocus(filterStepDepartment)"
+                  (mouseleave)="onFocus()"
+                >
+                  <p-autoComplete
+                    placeholder="Select Department"
+                    [(ngModel)]="filterStepDepartment"
+                    [suggestions]="filterStepDepartmentList"
+                    [inputStyle]="{ width: '100%' }"
+                    type="search"
+                    [pTooltip]="toolTipData"
+                    [style]="{ width: '100%' }"
+                    field="label"
+                    [disabled]="true"
+                    [readonly]="true"
+                    [minLength]="1"
+                  ></p-autoComplete>
+                </div>
+              </div>
+              <div class="grid">
+                <div class="col-4">
+                  <label><strong>Office Level</strong></label>
+                </div>
+                <div
+                  class="col-8"
+                  (mouseenter)="onFocus(filterStepOffice)"
+                  (mouseleave)="onFocus()"
+                >
+                  <p-autoComplete
+                    placeholder="Select Office Level"
+                    [(ngModel)]="filterStepOffice"
+                    [suggestions]="filterStepOfficeList"
+                    (completeMethod)="getFilterStepOfficeList($event)"
+                    [inputStyle]="{ width: '100%' }"
+                    type="search"
+                    [dropdown]="true"
+                    [pTooltip]="toolTipData"
+                    [style]="{ width: '100%' }"
+                    field="value"
+                    (onSelect)="onStepOfficeLevelSelect()"
+                    (onClear)="onStepOfcLvlUnSelect()"
+                    [minLength]="1"
+                  ></p-autoComplete>
+                </div>
+              </div>
+              <div class="grid">
+                <div class="col-4">
+                  <label><strong>Role</strong></label>
+                </div>
+                <div
+                  class="col-8"
+                  (mouseenter)="onFocus(fileterStepRole)"
+                  (mouseleave)="onFocus()"
+                >
+                  <p-autoComplete
+                    placeholder="Select Role"
+                    [inputStyle]="{ width: '100%' }"
+                    [style]="{ width: '100%' }"
+                    [(ngModel)]="fileterStepRole"
+                    [suggestions]="filterStepRoleList"
+                    (completeMethod)="getFilterStepRoleList($event)"
+                    field="value"
+                    type="search"
+                    [dropdown]="true"
+                    [pTooltip]="toolTipData"
+                    [disabled]="isCadreSelected"
+                    [readonly]="isCadreSelected"
+                    (onSelect)="onStepRoleSelect()"
+                    (onClear)="onStepRoleUnselect()"
+                    [minLength]="1"
+                  ></p-autoComplete>
+                </div>
+              </div>
+              <div class="grid">
+                <div class="col-12 flex justify-content-center">
+                  <label for=""><strong>OR</strong></label>
+                </div>
+              </div>
+              <div class="grid">
+                <div class="col-4">
+                  <label><strong>Cadre</strong></label>
+                </div>
+                <div
+                  class="col-8"
+                  (mouseenter)="onFocus(filterStepCadre)"
+                  (mouseleave)="onFocus()"
+                >
+                  <p-autoComplete
+                    placeholder="Select Cadre"
+                    [inputStyle]="{ width: '100%' }"
+                    [style]="{ width: '100%' }"
+                    [(ngModel)]="filterStepCadre"
+                    [suggestions]="filterStepCadreList"
+                    (completeMethod)="getFilterStepCadreList($event)"
+                    field="value"
+                    type="search"
+                    [dropdown]="true"
+                    [pTooltip]="toolTipData"
+                    (onSelect)="onStepCadreSelect()"
+                    (onClear)="onStepCadreUnselect()"
+                    [disabled]="isRoleSelected"
+                    [readonly]="isRoleSelected"
+                    [minLength]="1"
+                  ></p-autoComplete>
+                </div>
+              </div>
+              <div class="grid">
+                <div class="col-4">
+                  <label><strong>Post</strong></label>
+                </div>
+                <div
+                  class="col-8"
+                  (mouseenter)="onFocus(filterStepPost)"
+                  (mouseleave)="onFocus()"
+                >
+                  <p-autoComplete
+                    placeholder="Select Post"
+                    [inputStyle]="{ width: '100%' }"
+                    [style]="{ width: '100%' }"
+                    [(ngModel)]="filterStepPost"
+                    [suggestions]="filterStepPostList"
+                    (completeMethod)="getFilterStepPostList($event)"
+                    field="value"
+                    type="search"
+                    [dropdown]="true"
+                    [pTooltip]="toolTipData"
+                    [disabled]="isRoleSelected || !isCadreExist"
+                    [readonly]="isRoleSelected"
+                    [minLength]="1"
+                  ></p-autoComplete>
+                </div>
+              </div>
+              <div class="grid">
+                <div class="col-4">
+                  <label><strong>Assignment Type</strong></label>
+                </div>
+                <div class="col-4">
+                  <div class="field-checkbox">
+                    <p-checkbox
+                      [(ngModel)]="isBroadCast"
+                      (onChange)="onBroadCastChange()"
+                      [binary]="true"
+                      inputId="binary"
+                    ></p-checkbox>
+                    <label for="binary"><strong>Broadcast</strong></label>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="field-checkbox">
+                    <p-checkbox
+                      [(ngModel)]="isRoundRobin"
+                      (onChange)="onRoundRabinChange()"
+                      [binary]="true"
+                      inputId="binary"
+                    ></p-checkbox>
+                    <label for="binary"><strong>Round Robin</strong></label>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div class="flex justify-content-end">
+                <p-button label="save" (onClick)="saveStep()"></p-button>
+              </div>
+            </div>
+          </div>
+        </p-dialog>
+      </div>
+    </div>
+    <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+  </p-panel>
+</div>

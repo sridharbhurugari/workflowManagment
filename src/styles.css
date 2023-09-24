@@ -1,0 +1,192 @@
+/* Theme Styles Start */
+body,
+body .p-component {
+  margin: 0;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 12px !important;
+}
+
+/* Theme Styles End */
+
+/* Table styles starts */
+.p-datatable.p-datatable-gridlines .p-datatable-thead>tr>th {
+  border-width: 0px 0px 0px 0px;
+  padding: 1vh 1em;
+  background-color: #25396f;
+  color: white;
+}
+
+.p-datatable.p-datatable-gridlines .p-datatable-tbody>tr>td {
+  text-align: left;
+  border: 1px solid #e9ecef;
+  border-width: 0 0 1px 0;
+  padding: 1vh 1em;
+}
+
+.p-paginator {
+  background: #ffffff;
+  color: #6c757d;
+  border: solid #e9ecef;
+  border-width: 0;
+  padding: 0 !important;
+  border-radius: 3px;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: #E3F2FD;
+  border-color: #E3F2FD;
+  box-shadow: none !important;
+  color: #151616;
+}
+.p-paginator .p-paginator-pages .p-paginator-page {
+  background-color: transparent;
+  border: 0 none;
+  color: #6c757d;
+  min-width: 2.3vm;
+  height: 1.5vw !important; 
+  margin: 0.143vw;
+  transition: box-shadow 0.2s;
+  border-radius: 3px;
+}
+/* Table styles End */
+
+/* Panel styles start */
+.p-panel .p-panel-header {
+  border: 1px solid #dee2e6;
+  padding: 1em !important;
+  background: #f8f9fa;
+  color: #495057;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+}
+
+.p-panel .p-panel-header .p-panel-title {
+  font-weight: 600;
+  margin-left: 5px;
+  color: #345ba0;
+}
+
+.p-autocomplete {
+  position: relative;
+}
+
+/* Panel styles End */
+.p-autocomplete .p-autocomplete-multiple-container .p-autocomplete-input-token input {
+  font-size: -1rem;
+  color: #495057;
+  padding: 0;
+  margin: 0;
+}
+
+.red-star {
+  color: red;
+}
+
+.p-dropdown {
+  position: relative;
+  box-shadow: none !important;
+}
+
+.p-dropdown .p-dropdown-label {
+  background: transparent;
+  width: 100%;
+  border: 0 none;
+  font-size: small;
+  font-family: "Open Sans", sans-serif !important;
+}
+
+.p-inputtext {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 1rem;
+  color: #495057;
+  background: #ffffff;
+  padding: 0.5rem 0.5rem;
+  border: 1px solid #ced4da;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  border-radius: 3px;
+  box-shadow: none;
+}
+
+.p-inputtext:enabled:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: none !important;
+  border-color: #2196F3;
+}
+
+.p-autocomplete .p-autocomplete-multiple-container {
+  box-shadow: none !important;
+}
+.p-button{
+  box-shadow: none !important;
+}
+.p-button.p-button-icon-only {
+  width: 2.357rem;
+  padding: 0.5rem 0;
+  box-shadow: none !important;
+}
+
+.p-message {
+  margin: 0 !important;
+  border-radius: 1px;
+}
+
+.p-message .p-message-wrapper {
+  padding: 0 !important;
+}
+.p-checkbox-box {
+  display: flex;
+  box-shadow: none !important;
+  justify-content: center;
+  align-items: center;
+}
+
+.p-treetable table {
+  border-collapse: separate !important; 
+  width: 100%;  
+  background: whitesmoke !important;
+  table-layout: fixed;
+}
+.p-treetable .p-treetable-thead > tr > th {
+  text-align: left !important; 
+  padding: 1em 1em !important;  
+  border-width: 0 0 1px 0 !important;
+  font-weight: 600 !important;
+  color: #ffff !important;
+  background: #25396f !important;
+  transition: box-shadow 0s !important;
+}
+.p-treetable .p-treetable-tbody > tr > td {
+  text-align: left;
+  border: none !important; 
+  border-width: 0 !important; 
+  padding: 0 !important; 
+}
+.p-datatable .p-datatable-header {
+  background: #f8f9fa;
+  color: #495057;
+  border: 1px solid #e9ecef;
+  border-width: 1px 0 1px 0;
+  padding: 1vh 1vh !important;
+  font-weight: 600;
+}
+.p-autocomplete-panel .p-autocomplete-items:not(.p-autocomplete-virtualscroll) {
+  padding: 0.5vh 0;
+  height: 150px !important; 
+}
+
+.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
+  background: #2196F3;
+  height: 1.9em;
+}
+
+.p-inputswitch .p-inputswitch-slider {
+  background: #ced4da;
+  padding: 0;
+  height: 1.9em;
+  /* transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s; */
+  border-radius: 15em;
+}

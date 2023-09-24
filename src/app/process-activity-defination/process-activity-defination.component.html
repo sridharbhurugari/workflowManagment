@@ -1,0 +1,164 @@
+<div class="ui-g">
+    <p-panel class="panel">
+      <ng-template pTemplate="header">
+        <a routerLink="/home"><strong>Home >></strong></a
+        ><a routerLink="/process"
+          ><strong>Process Definition Listing</strong></a
+        >
+        >><a routerLink="/process"
+          ><strong>Activity Definition Listing</strong></a
+        >
+      </ng-template>
+      <ng-template pTemplate="icons">
+        <div>
+          <p-button
+            label="Add Activity"
+            (click)="addActivity()"
+            styleClass="p-button-sm"
+          ></p-button>
+        </div>
+      </ng-template>     
+      <div class="grid"> 
+        <div class="col-6 flex justify-content-start">
+          <label for=""><strong>Activities for Process:</strong>{{processName}}</label>
+        </div>       
+      </div>
+        <div class="ui-g">
+          <div class="ui-g-12">
+            <p-table #dt
+            class="table"
+            styleClass="p-datatable-gridlines"
+            [value]="activityData"
+            responsiveLayout="stack"
+            [responsive]="true"
+            [loading]="loading"
+            [paginator]="true"
+            [rows]="rowsPerPage"
+            [totalRecords]="totalCount"
+            [style]="{ width: '100%' }"
+            [(first)]="currentPage"
+            selectionMode="single"
+            [globalFilterFields]="['activityName','activityCode']"
+            (onRowSelect)="onActivitySelect($event)"
+          >
+          <ng-template pTemplate="caption">
+            <div class="table-header flex justify-content-end">              
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="search" pInputText size="20" (input)="dt.filterGlobal($any($event.target).value,'contains')"  placeholder="Search" />
+                </span>
+            </div>
+        </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th pSortableColumn="activityCode">
+                  Activity Code<p-sortIcon field="activityCode"></p-sortIcon>
+                </th>
+                <th pSortableColumn="activityName">
+                  Activity Name<p-sortIcon field="activityName"></p-sortIcon>
+                </th>
+                <th pSortableColumn="status">
+                  Status<p-sortIcon field="status"></p-sortIcon>
+                </th>
+                <th>
+                  Action
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-act>
+              <tr [pSelectableRow]="act">
+                <td (click)="onToggleNotBlur()">
+                  <span class="p-column-title">Process Code</span
+                  >{{ act.activityCode }}
+                </td>
+                <td (click)="onToggleNotBlur()">
+                  <span class="p-column-title">Process Name</span
+                  >{{ act.activityName }}
+                </td>
+                <td (click)="onToggleNotBlur()">
+                  <span class="p-column-title">Status</span
+                  >{{ act.status | statusTransperPipe: "1" }}
+                </td>
+                <td (click)="onToggleBlur()">
+                  <p-inputSwitch (onChange)="handleChange($event)" [(ngModel)]="act.status"></p-inputSwitch>
+                </td>   
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage" let-columns>
+              <tr>
+                <td
+                  [ngClass]="{
+                    'red-star': alertMessage === 'No Activity Found'
+                  }"
+                  [attr.colspan]="3"
+                >
+                  {{ alertMessage }}
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+          </div>
+        </div>
+    </p-panel>
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <p-dialog
+          header="Add Activity"
+          [(visible)]="addActivityDialog"
+          [style]="{ width: '30vw' }"
+        >
+          <div class="md:col-6 lg:col-12 sm:col-12">
+            <label for="" class="_labelStyle"
+              ><strong> Activity Code </strong></label
+            >
+            <input
+              type="text"
+              maxlength="50"
+              [style]="{ width: '100%' }"
+              type="search"
+              oninput="this.value = this.value.replace(/[^A-Za-z0-9-,.;'&/.() ]|^ /g,'')"
+              pInputText
+              [(ngModel)]="activityCode"
+            />
+          </div>
+          <div class="md:col-6 lg:col-12 sm:col-12">
+            <label for="" class="_labelStyle"
+              ><strong> Activity Name </strong></label
+            >
+            <input
+              type="text"
+              maxlength="50"
+              [style]="{ width: '100%' }"
+              type="search"
+              oninput="this.value = this.value.replace(/[^A-Za-z0-9-,.;'&/.() ]|^ /g,'')"
+              pInputText
+              [(ngModel)]="activityName"
+            />
+          </div>
+          <div class="md:col-6 lg:col-12 sm:col-12" style="margin-top: 15px">
+            <div class="field-checkbox">
+              <p-checkbox
+                [(ngModel)]="activityStatus"
+                [binary]="true"
+                inputId="binary"
+              ></p-checkbox>
+              <label for="binary"><strong>Active</strong></label>
+            </div>
+          </div>
+          <div class="grid flex justify-content-end">
+            <div
+              class="col-1 md:col-6 lg:col-1 sm:col-12 flex justify-content-end"
+            >
+              <p-button
+                label="Submit"
+                (onClick)="onSubmitActivity()"
+                styleClass="p-button-sm"
+              ></p-button>
+            </div>
+          </div>
+        </p-dialog>
+        <p-toast position="top-right"></p-toast>
+      <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog> 
+      </div>
+    </div>  
+</div>
